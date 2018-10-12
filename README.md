@@ -2,9 +2,9 @@
 
 ## Time
 
-System time is measured by a _system clock_, which is typically implemented as a simple count of the number of ticks that have transpired since some arbitrary starting date, called the epoch.
+System time is measured by a _system clock_, which is implemented as a simple count of the number of ticks that have transpired since an arbitrary starting date, called the epoch.
 
-The *system clock* is typically implemented as a programmable interval timer (PIT) that periodically interrupts the CPU, which then starts executing a timer interrupt service routine. This routine typically adds one tick to the system clock (a simple counter) and handles other periodic housekeeping tasks (preemption, etc.) before returning to the task the CPU was executing before the interruption.
+The *system clock* is implemented as a programmable interval timer (PIT) that periodically interrupts the CPU, which then starts executing a timer interrupt service routine. This routine adds one tick to the system clock (a simple counter) and handles other periodic housekeeping tasks (preemption, etc.) before returning to the task the CPU was executing before the interruption.
 
 <hr/>
 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/">
