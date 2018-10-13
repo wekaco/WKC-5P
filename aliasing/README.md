@@ -1,0 +1,3 @@
+# Aliasing
+
+Experimentation with aliasing.
