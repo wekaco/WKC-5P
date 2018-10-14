@@ -1,0 +1,85 @@
+graph TD
+out_1 -.-> in_1
+out_2 -.-> in_2
+out_3 -.-> in_3
+out_4 -.-> in_4
+out_5 -.-> in_5
+out_6 -.-> in_6
+out_7 -.-> in_7
+out_8 -.-> in_8
+out_9 -.-> in_9
+out_10 -.-> in_10
+out_11 -.-> in_11
+out_12 -.-> in_12
+out_13 -.-> in_13
+out_14 -.-> in_14
+out_15 -.-> in_15
+out_16 -.-> in_16
+out_17 -.-> in_17
+out_18 -.-> in_18
+out_19 -.-> in_19
+out_20 -.-> in_20
+out_21 -.-> in_21
+out_22 -.-> in_22
+out_23 -.-> in_23
+out_24 -.-> in_24
+
+subgraph dsp_in
+in_1
+in_2
+in_3
+in_4
+end
+subgraph dsp_out
+out_7
+out_8
+out_9
+out_10
+end
+
+subgraph finalizer
+in_5 --> out_3
+in_6 --> out_4
+end
+
+subgraph xl_one
+in_7 --> out_1
+in_8 --> out_2
+end
+
+subgraph eq
+in_9 --> out_5
+in_10 --> out_6
+end
+
+subgraph 8_channel_mixer
+send
+main_out
+alt_out
+mix(mix) --> main_out
+line_in_1 --> mix
+line_in_2 --> mix
+line_in_3 -->|L| mix
+line_in_4 -->|R| mix
+line_in_5 -->|L| mix
+line_in_6 -->|R| mix
+line_in_7 -->|L| mix
+line_in_8 -->|R| mix
+return --> mix
+in_15 --> |L| return
+in_16 --> |R| return
+alt_out --> |L| out_13
+alt_out --> |R| out_14
+in_17 --> line_in_1
+in_18 --> line_in_2
+in_19 --> line_in_3
+in_20 --> line_in_4
+in_21 --> line_in_5
+in_22 --> line_in_6
+in_23 --> line_in_7
+in_24 --> line_in_8
+main_out --> |L| monitor_L
+main_out --> |L| out_11
+main_out --> |R| monitor_R
+main_out --> |R| out_12
+end
