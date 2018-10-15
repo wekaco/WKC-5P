@@ -43,10 +43,13 @@ in_6 --> out_4
 end
 
 subgraph xl_one
-in_7 --> out_1
-in_8 --> out_2
+in_7 --> xl_one_dsp_L
+in_8 --> xl_one_dsp_R
+subgraph xl_one_dsp
+xl_one_dsp_L --> out_1
+xl_one_dsp_R --> out_2
 end
-
+end
 subgraph eq
 in_9 --> out_5
 in_10 --> out_6
