@@ -9,7 +9,7 @@
   "license": " Creative Commons Attribution 4.0 International License",
   "private": true,
   "scripts": {
-    "docs": "./node_modules/.bin/mmdc -i outboard.mmd -o outboard.svg --width 1024 --height 768"
+    "docs": "for file in ./docs/**/*.mmd; do $(pwd)/node_modules/.bin/mmdc -i $file -o $file.svg --width 1024 --height 768; done;"
   },
   "devDependencies": {
     "mermaid.cli": "^0.5.1"
