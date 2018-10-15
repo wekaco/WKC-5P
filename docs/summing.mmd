@@ -1,20 +1,15 @@
 graph TD
-out_1 -.-> in_1
-out_2 -.-> in_2
-out_3 -.-> in_3
-out_4 -.-> in_4
-out_5 -.-> in_5
-out_6 -.-> in_6
-out_7 -.-> in_7
-out_8 -.-> in_8
-out_9 -.-> in_9
-out_10 -.-> in_10
+subgraph patchbay_main_out
 out_11 -.-> in_11
 out_12 -.-> in_12
 out_13 -.-> in_13
 out_14 -.-> in_14
+end
+subgraph patchbay_returns
 out_15 -.-> in_15
 out_16 -.-> in_16
+end
+subgraph patchbay_line_in
 out_17 -.-> in_17
 out_18 -.-> in_18
 out_19 -.-> in_19
@@ -23,41 +18,6 @@ out_21 -.-> in_21
 out_22 -.-> in_22
 out_23 -.-> in_23
 out_24 -.-> in_24
-
-subgraph dsp_in
-in_1
-in_2
-in_3
-in_4
-end
-subgraph dsp_out
-out_7
-out_8
-out_9
-out_10
-end
-
-subgraph finalizer
-subgraph finalizer_dsp
-finalizer_dsp_L --> out_3
-finalizer_dsp_R --> out_4
-end
-in_5 --> finalizer_dsp_L
-in_6 --> finalizer_dsp_R
-end
-
-subgraph xl_one
-in_7 --> xl_one_dsp_L
-in_8 --> xl_one_dsp_R
-subgraph xl_one_dsp
-xl_one_dsp_L --> out_1
-xl_one_dsp_R --> out_2
-end
-end
-
-subgraph eq
-in_9 --> out_5
-in_10 --> out_6
 end
 
 subgraph speaker
@@ -95,4 +55,11 @@ main_out --> |L| monitor_L
 main_out --> |L| out_11
 main_out --> |R| monitor_R
 main_out --> |R| out_12
+end
+
+subgraph tape
+tape_out_L --> |L| mix
+tape_out_R --> |R| mix
+mix --> |L| tape_in_L
+mix --> |R| tape_in_R
 end
