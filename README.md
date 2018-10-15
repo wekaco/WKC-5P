@@ -1,6 +1,6 @@
 # ヒューマノイド「WKC-5P」
 ## Outboard
-![outboard](https://github.com/wekaco/WKC-5P/blob/master/outboard.svg)
+![outboard](https://github.com/wekaco/WKC-5P/blob/master/docs/outboard.mmd.svg)
 ## Time
 
 System time is measured by a _system clock_, which is implemented as a simple count of the number of ticks that have transpired since an arbitrary starting date, called the epoch.
