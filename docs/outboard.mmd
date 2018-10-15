@@ -38,8 +38,12 @@ out_10
 end
 
 subgraph finalizer
-in_5 --> out_3
-in_6 --> out_4
+subgraph finalizer_dsp
+finalizer_dsp_L --> out_3
+finalizer_dsp_R --> out_4
+end
+in_5 --> finalizer_dsp_L
+in_6 --> finalizer_dsp_R
 end
 
 subgraph xl_one
@@ -50,6 +54,7 @@ xl_one_dsp_L --> out_1
 xl_one_dsp_R --> out_2
 end
 end
+
 subgraph eq
 in_9 --> out_5
 in_10 --> out_6
