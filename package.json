@@ -1,0 +1,17 @@
+{
+  "dependencies": {},
+  "name": "WKC-5P",
+  "version": "0.0.1",
+  "description": "ヒューマノイド「WKC-5P」",
+  "main": "index.js",
+  "repository": "git@github.com:wekaco/WKC-5P.git",
+  "author": "Dmtrs Flaco Mengidis <tydeas.dr@gmail.com>",
+  "license": " Creative Commons Attribution 4.0 International License",
+  "private": true,
+  "scripts": {
+    "docs": "./node_modules/.bin/mmdc -i outboard.mmd -o outboard.svg --width 1024 --height 768"
+  },
+  "devDependencies": {
+    "mermaid.cli": "^0.5.1"
+  }
+}
