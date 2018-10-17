@@ -61,6 +61,7 @@ typings/
 # apiary
 apiary.apib
 
+<<<<<<< HEAD
 # dist
 build/
 dist/
