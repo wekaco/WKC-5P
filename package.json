@@ -12,7 +12,7 @@
     "docker:run":"docker run --volume ~/code/supercollider:/home/supercollider-3.10 -ti --rm wkc-5p",
     "docker:debug": "docker run --volume build:/home/supercollider-3.10/build -ti --rm wkc-5p /bin/sh",
     "docker:build": "docker build -t wkc-5p .",
-    "docker:dev": "docker build -f Dockerfile.builder -t wkc-5p-dev .",
+    "docker:dev": "docker build -f Dockerfile.dev -t wkc-5p-dev .",
     "docs": "rm ./docs/*.mmd.svg; for file in ./docs/*.mmd; do $(pwd)/node_modules/.bin/mmdc -i $file -o $file.svg --width 1024 --height 768; done;"
   },
   "devDependencies": {

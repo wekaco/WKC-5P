@@ -10,15 +10,16 @@ ARG SC_VERSION=3.10
 ENV SC_SRC_DIR=/home/supercollider-$SC_VERSION
 ENV SC_BUILD_DIR=$SC_SRC_DIR/build
 
-RUN apk --update add --no-cache build-base cmake linux-headers bsd-compat-headers
-
 RUN apk --update add --no-cache \
+  build-base cmake linux-headers bsd-compat-headers \
   libsndfile-dev fftw avahi-dev jack-dev \
   hidapi-dev@testing eudev-dev \
   alsa-utils alsa-utils-doc alsa-lib alsaconf alsa-lib-dev alsa-plugins-jack@testing
 
-#RUN apk --no-cache add ca-certificates wget \
-#  && wget -q -O /etc/apk/keys/sgerrand.rsa.pub https://alpine-pkgs.sgerrand.com/sgerrand.rsa.pub \
+RUN apk --no-cache add ca-certificates git \
+  && git clone --depth 1 --shallow-submodules --branch alpine https://github.com/wekaco/supercollider.git $SC_SRC_DIR && cd $SC_SRC_DIR \
+  && git submodule init && git submodule update \
+  && mkdir build
 #  && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk \
   #&& apk --no-cache add glibc-2.28-r0.apk
 
@@ -30,7 +31,7 @@ ARG BUILD_TYPE=RelWithDebInfo
 
 WORKDIR $SC_BUILD_DIR
 
-CMD cmake -DNATIVE=ON \
+RUN cmake -DNATIVE=ON \
   -DSCLANG_SERVER=OFF \
   -DNO_X11=ON \
   -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
