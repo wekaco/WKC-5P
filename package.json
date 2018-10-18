@@ -17,8 +17,5 @@
   },
   "devDependencies": {
     "mermaid.cli": "^0.5.1"
-  },
-  "dependencies": {
-    "supercolliderjs": "^0.14.2"
   }
 }
