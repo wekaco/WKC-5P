@@ -34,3 +34,5 @@ RUN cmake -DNATIVE=ON \
   -DSC_EL=NO \
   $SC_SRC_DIR \
   && make
+
+RUN make install && ldconfig /
