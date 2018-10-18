@@ -1,5 +1,3 @@
-# edge due to hidapi-dev package
-#FROM frolvlad/alpine-glibc
 FROM alpine:3.8
 
 RUN echo '@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing' >> /etc/apk/repositories
@@ -20,14 +18,9 @@ RUN apk --no-cache add ca-certificates git \
   && git clone --depth 1 --shallow-submodules --branch alpine https://github.com/wekaco/supercollider.git $SC_SRC_DIR && cd $SC_SRC_DIR \
   && git submodule init && git submodule update \
   && mkdir build
-#  && wget https://github.com/sgerrand/alpine-pkg-glibc/releases/download/2.28-r0/glibc-2.28-r0.apk \
-  #&& apk --no-cache add glibc-2.28-r0.apk
 
 #ARG BUILD_TYPE=Release
 ARG BUILD_TYPE=RelWithDebInfo
-
-   # && ls build \
-   # && apk del libsndfile gcc cmake jack-dev fftw avahi-dev build-base cmake
 
 WORKDIR $SC_BUILD_DIR
 
@@ -39,10 +32,5 @@ RUN cmake -DNATIVE=ON \
   -DSNDFILE_LIBRARY=/usr/lib/libsndfile.so.1 \
   -DSNDFILE_INCLUDE_DIR=/usr/lib \
   -DSC_EL=NO \
-#  -DAUDIOAPI=jack \
   $SC_SRC_DIR \
   && make
-
-# /usr/lib/jack/jack_alsa.so
-# /usr/lib/jack/jack_alsarawmidi.so
-# RUN cmake -DNATIVE=ON -DNO_X11=ON -DCMAKE_BUILD_TYPE=$BUILD_TYPE -DSC_QT=OFF -DSNDFILE_LIBRARY=/usr/lib/libsndfile.so.1 -DSNDFILE_INCLUDE_DIR=/usr/lib $SC_SRC_DIR 
