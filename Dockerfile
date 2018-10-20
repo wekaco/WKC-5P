@@ -12,9 +12,9 @@ ARG BUILD_TYPE=RelWithDebInfo
 
 RUN apk --update add --no-cache \
   build-base cmake linux-headers bsd-compat-headers \
-  libsndfile-dev fftw avahi-dev jack-dev \
+  libsndfile-dev fftw avahi-dev \
   hidapi-dev@testing eudev-dev \
-  alsa-utils alsa-utils-doc alsa-lib alsaconf alsa-lib-dev alsa-plugins-jack@testing \
+  alsa-utils alsa-utils-doc alsa-lib alsaconf alsa-lib-dev portaudio-dev jack-dev \
   ca-certificates git \
   && git clone --depth 1 --shallow-submodules --branch alpine https://github.com/wekaco/supercollider.git $SC_SRC_DIR && cd $SC_SRC_DIR \
   && git submodule init && git submodule update \
@@ -27,6 +27,7 @@ RUN apk --update add --no-cache \
   -DSNDFILE_LIBRARY=/usr/lib/libsndfile.so.1 \
   -DSNDFILE_INCLUDE_DIR=/usr/lib \
   -DSC_EL=NO \
+  -DAUDIOAPI=portaudio \
   $SC_SRC_DIR \
   && make \
   && make install \
@@ -34,3 +35,10 @@ RUN apk --update add --no-cache \
   && cd /home \
   && rm -rf $SC_SRC_DIR \
   && apk del build-base perl python cyrus-sasl-dev
+
+ENV PORT 3000
+
+EXPOSE $PORT
+
+CMD [ "/usr/local/bin/scsynth", "-u", "$PORT" ]
+
