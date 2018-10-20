@@ -10,9 +10,9 @@ ENV SC_BUILD_DIR=$SC_SRC_DIR/build
 
 RUN apk --update add --no-cache \
   build-base cmake linux-headers bsd-compat-headers \
-  libsndfile-dev fftw avahi-dev jack-dev \
+  libsndfile-dev fftw avahi-dev \
   hidapi-dev@testing eudev-dev \
-  alsa-utils alsa-utils-doc alsa-lib alsaconf alsa-lib-dev alsa-plugins-jack@testing
+  alsa-utils alsa-utils-doc alsa-lib alsaconf alsa-lib-dev portaudio-dev jack-dev
 
 RUN apk --no-cache add ca-certificates git \
   && git clone --depth 1 --shallow-submodules --branch alpine https://github.com/wekaco/supercollider.git $SC_SRC_DIR && cd $SC_SRC_DIR \
@@ -26,6 +26,7 @@ WORKDIR $SC_BUILD_DIR
 
 RUN cmake -DNATIVE=ON \
   -DSCLANG_SERVER=OFF \
+  -DAUDIOAPI=portaudio \
   -DNO_X11=ON \
   -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
   -DSC_QT=OFF \
@@ -36,3 +37,5 @@ RUN cmake -DNATIVE=ON \
   && make
 
 RUN make install && ldconfig /
+
+RUN apk --no-cache add vim
