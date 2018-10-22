@@ -9,9 +9,10 @@
   "license": " Creative Commons Attribution 4.0 International License",
   "private": true,
   "scripts": {
+    "pulseaudio": "pulseaudio -v --load=\"module-native-protocol-unix socket=/tmp/pulse-501 auth-anonymous=1\"",
     "docker:build": "docker build -t wkc-5p .",
     "docker:run":"docker run --ulimit memlock=8192000000:8192000000  -ti --rm wkc-5p",
-    "docker:debug": "docker run -ti --privileged=true --memory 40000000 --rm wkc-5p-dev /bin/sh",
+    "docker:debug": "docker run --device /dev/snd --volume=/tmp/pulse-$(id -u):/run/pulse --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged=true --memory 40000000 --rm wkc-5p-dev /bin/sh",
     "docker:dev": "docker build -f Dockerfile.dev -t wkc-5p-dev .",
     "docs": "rm ./docs/*.mmd.svg; for file in ./docs/*.mmd; do $(pwd)/node_modules/.bin/mmdc -i $file -o $file.svg --width 1024 --height 768; done;"
   },
