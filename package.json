@@ -13,7 +13,7 @@
     "docker:run":"docker run --ulimit memlock=8192000000:8192000000  -ti --rm wkc-5p",
     "docker:debug": "docker run -ti --privileged=true --memory 40000000 --rm wkc-5p-dev /bin/sh",
     "docker:dev": "docker build -f Dockerfile.dev -t wkc-5p-dev .",
-    "docs": "rm ./docs/*.mmd.svg; for file in ./docs/*.mmd; do $(pwd)/node_modules/.bin/mmdc -i $file -o $file.svg --width 1024 --height 768; done;"
+    "docs": "rm ./**/*.mmd.svg; for file in ./**/*.mmd; do $(pwd)/node_modules/.bin/mmdc -i $file -o $file.svg --width 1024 --height 768; done;"
   },
   "devDependencies": {
     "mermaid.cli": "^0.5.1"
