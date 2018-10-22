@@ -38,4 +38,13 @@ RUN cmake -DNATIVE=ON \
 
 RUN make install && ldconfig /
 
+WORKDIR /usr/app
+
+# chore/pulseaudio
+
 RUN apk --no-cache add vim
+
+RUN apk --no-cache add pulseaudio-alsa alsa-plugins-pulse@testing
+
+COPY pulse-client.conf /etc/pulse/client.conf
+
