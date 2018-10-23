@@ -10,11 +10,14 @@ ENV SC_BUILD_DIR=$SC_SRC_DIR/build
 
 ARG BUILD_TYPE=RelWithDebInfo
 
+COPY pulse-client.conf /etc/pulse/client.conf
+
 RUN apk --update add --no-cache \
   build-base cmake linux-headers bsd-compat-headers \
   libsndfile-dev fftw avahi-dev \
   hidapi-dev@testing eudev-dev \
   alsa-utils alsa-utils-doc alsa-lib alsaconf alsa-lib-dev portaudio-dev jack-dev \
+  pulseaudio-alsa alsa-plugins-pulse@testing \
   ca-certificates git \
   && git clone --depth 1 --shallow-submodules --branch alpine https://github.com/wekaco/supercollider.git $SC_SRC_DIR && cd $SC_SRC_DIR \
   && git submodule init && git submodule update \
@@ -41,4 +44,6 @@ ENV PORT 3000
 EXPOSE $PORT
 
 CMD [ "/usr/local/bin/scsynth", "-u", "$PORT" ]
+
+WORKDIR /usr/app
 
