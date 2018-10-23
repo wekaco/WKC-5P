@@ -1,4 +1,4 @@
-# Pulseaudio setup
+# Pulseaudio wiki
 
 ## Host install (development)
 
@@ -57,3 +57,9 @@ gurki
 All the methods that connect to the daemon over the network using the native protocol need `module-native-protocol-tcp` loaded. This includes tunnels and Zeroconf setups. With this module loaded, the server listens on port `4713` for incoming client connections.
 
 [PulseAudio/Documentation/User/Network](https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Network/)
+
+## References
+
+- [PulseAudio/Documentation/User/Daemon/](https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Daemon/)
+- [PulseAudio/Documentation/User/Modules](https://www.freedesktop.org/wiki/Software/PulseAudio/Documentation/User/Modules/#index19h3)
+- [Arch/PulseAudio/Examples](https://wiki.archlinux.org/index.php/PulseAudio/Examples)
