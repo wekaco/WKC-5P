@@ -10,8 +10,6 @@ ENV SC_BUILD_DIR=$SC_SRC_DIR/build
 
 ARG BUILD_TYPE=RelWithDebInfo
 
-COPY pulse-client.conf /etc/pulse/client.conf
-
 RUN apk --update add --no-cache \
   build-base cmake linux-headers bsd-compat-headers \
   libsndfile-dev fftw avahi-dev \
@@ -38,6 +36,10 @@ RUN apk --update add --no-cache \
   && cd /home \
   && rm -rf $SC_SRC_DIR \
   && apk del build-base perl python cyrus-sasl-dev
+
+COPY pulse-client.conf /etc/pulse/client.conf
+COPY asound.conf /etc/asound.conf
+
 
 ENV PORT 3000
 

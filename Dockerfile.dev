@@ -8,8 +8,6 @@ ARG SC_VERSION=3.10
 ENV SC_SRC_DIR=/home/supercollider-$SC_VERSION
 ENV SC_BUILD_DIR=$SC_SRC_DIR/build
 
-COPY pulse-client.conf /etc/pulse/client.conf
-
 RUN apk --update add --no-cache \
   build-base cmake linux-headers bsd-compat-headers \
   libsndfile-dev fftw avahi-dev \
@@ -41,8 +39,9 @@ RUN cmake -DNATIVE=ON \
 
 RUN make install && ldconfig /
 
-WORKDIR /usr/app
+COPY pulse-client.conf /etc/pulse/client.conf
+COPY asound.conf /etc/asound.conf
 
-# chore/pulseaudio
+WORKDIR /usr/app
 
 RUN apk --no-cache add vim
