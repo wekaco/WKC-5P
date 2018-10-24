@@ -9,11 +9,13 @@
   "license": " Creative Commons Attribution 4.0 International License",
   "private": true,
   "scripts": {
-    "pulseaudio": "pulseaudio -v --load=\"module-native-protocol-tcp auth-anonymous=1\"",
-    "docker:build": "docker build -t wkc-5p .",
-    "docker:run":"docker run --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged=true --memory 40000000 --rm wkc-5p /bin/sh",
-    "docker:debug": "docker run --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged=true --memory 40000000 --rm wkc-5p-dev /bin/sh",
-    "docker:dev": "docker build -f Dockerfile.dev -t wkc-5p-dev .",
+    "pulse": "pulseaudio -v --load=\"module-native-protocol-tcp auth-anonymous=1\"",
+    "build:release": "docker build -t wkc-5p .",
+    "build:dev": "docker build -f Dockerfile.dev -t wkc-5p-dev .",
+    "build:sclang": "docker build -f Dockerfile.sclang -t wkc-5p-sclang .",
+    "run:release":"docker run -p 5000:5000 --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged=true --memory 290000000 --rm wkc-5p /bin/sh",
+    "run:dev":"docker run -p 5000:5000 --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged=true --memory 290000000 --rm wkc-5p-dev /bin/sh",
+    "run:sclang":"docker run -p 5000:5000 --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged=true --memory 290000000 --rm wkc-5p-sclang",
     "docs": "rm ./**/*.mmd.svg; for file in ./**/*.mmd; do $(pwd)/node_modules/.bin/mmdc -i $file -o $file.svg --width 1024 --height 768; done;"
   },
   "devDependencies": {
