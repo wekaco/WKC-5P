@@ -27,7 +27,7 @@ WORKDIR $SC_BUILD_DIR
 
 RUN cmake -DNATIVE=ON \
   -DSCLANG_SERVER=OFF \
-  -DAUDIOAPI=portaudio \
+  -DAUDIOAPI=jack \
   -DNO_X11=ON \
   -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
   -DSC_QT=OFF \
@@ -45,3 +45,9 @@ COPY asound.conf /etc/asound.conf
 WORKDIR /usr/app
 
 RUN apk --no-cache add vim
+
+RUN apk --no-cache add jack jack-dbus dbus
+
+COPY jack-dbus.conf /etc/dbus-1/system.d/jack-dbus.conf
+
+ENV DBUS_SESSION_BUS_ADDRESS unix:path=/run/dbus/system_bus_socket
