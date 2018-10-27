@@ -24,10 +24,13 @@ RUN apk --no-cache add ca-certificates git \
 ARG BUILD_TYPE=RelWithDebInfo
 
 WORKDIR $SC_BUILD_DIR
-
-RUN cmake -DNATIVE=ON \
+RUN cmake -DNATIVE=OFF \
   -DSCLANG_SERVER=OFF \
-  -DAUDIOAPI=portaudio \
+  -DBUILD_TESTING=OFF \
+  -DSC_WII=OFF \
+  -DSC_ED=OFF \
+  -DSC_EL=OFF \
+  -DSC_VIM=OFF \
   -DNO_X11=ON \
   -DCMAKE_BUILD_TYPE=$BUILD_TYPE \
   -DSC_QT=OFF \
