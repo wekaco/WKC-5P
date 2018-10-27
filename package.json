@@ -1,5 +1,9 @@
 {
-  "dependencies": {},
+  "dependencies": {
+    "osc": "^2.2.4",
+    "osc-js": "^1.2.2",
+    "supercolliderjs": "^0.14.2"
+  },
   "name": "WKC-5P",
   "version": "0.0.1",
   "description": "ヒューマノイド「WKC-5P」",
@@ -13,9 +17,9 @@
     "build:release": "docker build -t wkc-5p .",
     "build:dev": "docker build -f Dockerfile.dev -t wkc-5p-dev .",
     "build:sclang": "docker build -f Dockerfile.sclang -t wkc-5p-sclang .",
-    "run:release":"docker run -p 5000:5000 --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged=true --memory 290000000 --rm wkc-5p /bin/sh",
-    "run:dev":"docker run -p 5000:5000 --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged=true --memory 290000000 --rm wkc-5p-dev /bin/sh",
-    "run:sclang":"docker run -p 5000:5000 --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged=true --memory 290000000 --rm wkc-5p-sclang",
+    "run:release": "docker run -p 5000:5000 --volume=$(echo $(pwd))/usr/app:/usr/app -ti --memory 290000000 --rm wkc-5p /bin/sh",
+    "run:dev": "docker run -p 57110:57110 --volume=$(echo $(pwd))/usr/app:/usr/app -ti --privileged --ulimit memlock=29000000000 --oom-kill-disable --device /dev/snd --memory=\"2g\" --memory-swap=\"4g\"  --rm wkc-5p-dev /bin/sh",
+    "run:sclang": "docker run -p 5000:5000 --volume=$(echo $(pwd))/usr/app:/usr/app -ti --memory 290000000 --rm wkc-5p-sclang",
     "docs": "rm ./**/*.mmd.svg; for file in ./**/*.mmd; do $(pwd)/node_modules/.bin/mmdc -i $file -o $file.svg --width 1024 --height 768; done;"
   },
   "devDependencies": {
