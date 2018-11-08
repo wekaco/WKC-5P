@@ -64,3 +64,5 @@ apiary.apib
 # dist
 build/
 dist/
+
+.DS_Store

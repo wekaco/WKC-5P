@@ -1,0 +1,3 @@
+[submodule "docker/wekaco/swarm"]
+	path = docker/wekaco/swarm
+	url = git@github.com:wekaco/swarm-library-image.git
