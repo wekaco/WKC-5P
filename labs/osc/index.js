@@ -1,29 +1,34 @@
-const debug = require('debug')('osc:osc-min');
+const debug = require('debug')('osc:index');
 const dgram = require('dgram');
+
+const port = dgram.createSocket('udp4');
+
+const handler = require('./handler');
+const buf = require('./msg');
+
 const { msg } = require('supercolliderjs');
 
-const osc = require('osc-min');
-
-const buf = ([address, ...args ], oscType = 'message') => osc.toBuffer({
-  oscType,
-  address,
-  args
-});
 
 const REMOTE_ADDRESS = "127.0.0.1";
 const REMOTE_PORT = 57110;
+port.on('message', handler);
 
-const port =  dgram.createSocket('udp4');
+/**
+let numFrames = 32;
+let numChannels = 1;
+**/
 
-let { call }  = msg.status();
-let b = buf(call);
+for(let bufferID=0;bufferID<4;bufferID++) {
+  let call = msg.bufferSet(bufferID, [ 
+    [ 0, 0.2],
+    [ 1, 0.3],
+    [ 7, 1],
+  ]);
+  let b = buf(call);
 
-port.on('message', (message) => {
-  debug(`Receiced message:${osc.fromBuffer(message)}`);
-});
-
-port.send(b, 0, b.length, REMOTE_PORT, REMOTE_ADDRESS, (err) => {
-  if (err) {
-    debug(`Send error ${err}`);
-  }
-});
+  port.send(b, REMOTE_PORT, REMOTE_ADDRESS, (err) => {
+    if (err) {
+      debug(`Send error ${err}`);
+    }
+  });
+}

@@ -3,3 +3,9 @@
   s.boot; //start the server
   OSCFunc.trace(false);
 )
+(
+  b = s.cachedBufferAt(0);
+  b.query;
+  b.updateInfo;
+  b.plot;
+)
