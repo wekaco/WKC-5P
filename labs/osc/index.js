@@ -1,44 +1,29 @@
-const osc = require('osc');
-const debug = require('debug')('osc:index');
+const debug = require('debug')('osc:osc-min');
+const dgram = require('dgram');
+const { msg } = require('supercolliderjs');
 
-const localAddress = "0.0.0.0";
-const localPort = 57121;
+const osc = require('osc-min');
 
-const remoteAddress = "127.0.0.1";
-const remotePort = 57110;
-
-const metadata = true;
-
-const port = new osc.UDPPort({
-  localAddress,
-  localPort,
-  metadata,
+const buf = ([address, ...args ], oscType = 'message') => osc.toBuffer({
+  oscType,
+  address,
+  args
 });
- 
-// Listen for incoming OSC bundles.
-port.on("bundle", (bundle, timestamp, info) => {
-  debug(`An OSC bundle just arrived for time tag ${timestamp}:${bundle}`);
-  debug(`Remote info is : ${info}`);
+
+const REMOTE_ADDRESS = "127.0.0.1";
+const REMOTE_PORT = 57110;
+
+const port =  dgram.createSocket('udp4');
+
+let { call }  = msg.status();
+let b = buf(call);
+
+port.on('message', (message) => {
+  debug(`Receiced message:${osc.fromBuffer(message)}`);
 });
- 
-// Open the socket.
-port.open();
- 
- 
-// When the port is read, send an OSC message to, say, SuperCollider
-port.on("ready", () => {
-  debug(`port ready`);
-  port.send({
-    address: "/s_new",
-    args: [
-      {
-        type: "s",
-        value: "default"
-      },
-      {
-        type: "i",
-        value: 100
-      }
-    ]
-  }, remoteAddress, remotePort);
+
+port.send(b, 0, b.length, REMOTE_PORT, REMOTE_ADDRESS, (err) => {
+  if (err) {
+    debug(`Send error ${err}`);
+  }
 });
