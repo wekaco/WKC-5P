@@ -4,6 +4,7 @@
   "main": "index.js",
   "license": "MIT",
   "dependencies": {
-    "osc": "^2.2.4"
+    "osc-min": "^1.1.1",
+    "supercolliderjs": "^0.14.2"
   }
 }
