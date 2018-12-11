@@ -3,6 +3,24 @@
   "version": "0.0.1",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "build": "./node_modules/.bin/tsc",
+    "pretest": "./node_modules/.bin/eslint --ignore-path .gitignore .",
+    "test": "yarn build && yarn test:unit:api",
+    "test:unit:api": "find ./test -name '*.spec.js' | NODE_ENV=test xargs ./node_modules/.bin/nyc --reporter=html --reporter=text-summary ./node_modules/.bin/tape",
+    "posttest": "./node_modules/.bin/nyc check-coverage --statements 100 --functions 100 --branches 100 --lines 100",
+    "pretest:unit:api": "exit 0"
+  },
+  "devDependencies": {
+    "@types/debug": "^0.0.31",
+    "@types/node": "^10.12.12",
+    "nyc": "^13.1.0",
+    "tape": "^4.9.1",
+    "tdi": "^0.6.4",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.2"
+  },
   "dependencies": {
     "debug": "^4.1.0",
     "osc-min": "^1.1.1",
