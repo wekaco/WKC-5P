@@ -4,11 +4,14 @@ import * as dgram from "dgram";
 const debug = logger("osc:index");
 const port = dgram.createSocket("udp4");
 
-import handler from "./src/handler";
+import { MessageHandler } from "./src/handler";
+
+const msg_handler = new MessageHandler(port);
+
 import buf from "./src/msg";
 
-import { MessageType } from "./src/enums";
-import { msg } from "supercolliderjs";
+import { State, MessageType } from "./src/enums";
+import { msg, CallAndResponse } from "supercolliderjs";
 
 
 const REMOTE_ADDRESS = "127.0.0.1";
@@ -20,16 +23,22 @@ port.on("listening", (): void  => {
 port.on("error", (err: Error): void => {
   debug(`Socket error: ${err}`);
 });
-port.on("message", handler);
 port.on("close", (): void => {
   debug(`Socket closed`);
 });
 
+const { call }: CallAndResponse = msg.notify(State.ON);
+const b: Buffer = buf(call, MessageType.message);
+port.send(b, REMOTE_PORT, REMOTE_ADDRESS, (err) => {
+  if (err) {
+    debug(`Send error ${err}`);
+  }
+});
 /**
  * let numFrames = 32;
  * let numChannels = 1;
  */
-
+/**
 for (let bufferID: number = 0; bufferID < 4; bufferID++) {
   const call: Array<string> = msg.bufferSet(bufferID, [
     [0, 0.2],
@@ -43,4 +52,4 @@ for (let bufferID: number = 0; bufferID < 4; bufferID++) {
       debug(`Send error ${err}`);
     }
   });
-}
+}**/

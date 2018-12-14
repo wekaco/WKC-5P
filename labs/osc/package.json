@@ -4,6 +4,8 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "r": "DEBUG=* yarn build && node ./dist/index.js",
+    "dev": "./node_modules/.bin/tsc --watch",
     "build": "./node_modules/.bin/tsc",
     "pretest": "./node_modules/.bin/tslint --project tsconfig.json --config tslint.json",
     "test": "yarn build && yarn test:unit:api",
