@@ -5,6 +5,18 @@ import { Client, ServerOptions } from "./src/client";
 
 const client = new Client({ remote_address: "127.0.0.1", remote_port: 57110 });
 
+client.on("ready", () => {
+  debug(`client ready`);
+});
+
+/** TODO:
+ * - Process exit handling (notify state off?)
+ * - Buffer allocator
+ * - Buffer stream
+ * - Buffer clusterization
+ */
+
+
 // client.send(b).then(debug);
 /**
  * let numFrames = 32;
