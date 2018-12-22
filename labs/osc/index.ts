@@ -1,35 +1,28 @@
 import logger = require("debug");
-import * as dgram from "dgram";
-
 const debug = logger("osc:index");
-const port = dgram.createSocket("udp4");
 
-import handler from "./src/handler";
-import buf from "./src/msg";
+import { Client, ServerOptions } from "./src/client";
 
-import { MessageType } from "./src/enums";
-import { msg } from "supercolliderjs";
+const client = new Client({ remote_address: "127.0.0.1", remote_port: 57110 });
 
-
-const REMOTE_ADDRESS = "127.0.0.1";
-const REMOTE_PORT = 57110;
-
-port.on("listening", (): void  => {
-  debug(`Socket listening`);
-});
-port.on("error", (err: Error): void => {
-  debug(`Socket error: ${err}`);
-});
-port.on("message", handler);
-port.on("close", (): void => {
-  debug(`Socket closed`);
+client.on("ready", () => {
+  debug(`client ready`);
 });
 
+/** TODO:
+ * - Process exit handling (notify state off?)
+ * - Buffer allocator
+ * - Buffer stream
+ * - Buffer clusterization
+ */
+
+
+// client.send(b).then(debug);
 /**
  * let numFrames = 32;
  * let numChannels = 1;
  */
-
+/**
 for (let bufferID: number = 0; bufferID < 4; bufferID++) {
   const call: Array<string> = msg.bufferSet(bufferID, [
     [0, 0.2],
@@ -43,4 +36,4 @@ for (let bufferID: number = 0; bufferID < 4; bufferID++) {
       debug(`Send error ${err}`);
     }
   });
-}
+}**/
