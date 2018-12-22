@@ -1,39 +1,11 @@
 import logger = require("debug");
-import * as dgram from "dgram";
-
 const debug = logger("osc:index");
-const port = dgram.createSocket("udp4");
 
-import { MessageHandler } from "./src/handler";
+import { Client, ServerOptions } from "./src/client";
 
-const msg_handler = new MessageHandler(port);
+const client = new Client({ remote_address: "127.0.0.1", remote_port: 57110 });
 
-import buf from "./src/msg";
-
-import { State, MessageType } from "./src/enums";
-import { msg, CallAndResponse } from "supercolliderjs";
-
-
-const REMOTE_ADDRESS = "127.0.0.1";
-const REMOTE_PORT = 57110;
-
-port.on("listening", (): void  => {
-  debug(`Socket listening`);
-});
-port.on("error", (err: Error): void => {
-  debug(`Socket error: ${err}`);
-});
-port.on("close", (): void => {
-  debug(`Socket closed`);
-});
-
-const { call }: CallAndResponse = msg.notify(State.ON);
-const b: Buffer = buf(call, MessageType.message);
-port.send(b, REMOTE_PORT, REMOTE_ADDRESS, (err) => {
-  if (err) {
-    debug(`Send error ${err}`);
-  }
-});
+// client.send(b).then(debug);
 /**
  * let numFrames = 32;
  * let numChannels = 1;
