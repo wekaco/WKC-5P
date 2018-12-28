@@ -20,11 +20,3 @@ export class MessageHandler extends EventEmitter {
     });
   }
 }
-
-export class ErrorHandler {
-  constructor(port: Socket) {
-    port.on("error", (err: Error) => {
-      debug(err);
-    });
-  }
-}

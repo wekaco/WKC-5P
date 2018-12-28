@@ -1,11 +1,10 @@
 import logger = require("debug");
 const debug = logger("osc:client");
 
-import * as dgram from "dgram";
 import { Socket } from "dgram";
 import { EventEmitter } from "events";
 
-import { MessageHandler, ErrorHandler } from "./handler";
+import { MessageHandler  } from "./handlers";
 
 import { State, MessageType, TypeValue } from "./enums";
 import { msg, CallAndResponse } from "supercolliderjs";
@@ -20,38 +19,41 @@ export class Client extends EventEmitter {
 
   private _id: number;
   private msg_handler: MessageHandler;
-  private error_handler: ErrorHandler;
 
   private _ready: Promise<number>;
 
-  constructor(options: ServerOptions) {
+  constructor(port: Socket, options: ServerOptions) {
     super();
     this.options = options;
-    this.port = dgram.createSocket("udp4");
+    this.port = port;
 
     this.msg_handler = new MessageHandler(this.port);
-    this.error_handler = new ErrorHandler(this.port);
 
+    this.port.on("error", (err: Error) => {
+      this.emit("error", err);
+    });
     this.port.on("listening", (): void => {
       debug(`listening`);
     });
-
     this.port.on("close", (): void => {
       debug(`close`);
     });
 
-    this._connect();
+    this._connect().catch((err: Error) => {
+      this.emit("error", err);
+    });
   }
 
-  private _connect(): void  {
-    this._send(msg.notify(State.ON)).then((): void => {
-      this.msg_handler.once("/notify", (response: Array<TypeValue>): void => {
-        const [ id, total ] = response;
-        debug(`connected as client id ${id.value} from ${total.value} maxLogins`);
-        this._id = id.value;
-        this.emit("ready");
+  private _connect(): Promise<any>  {
+    return this._send(msg.notify(State.ON))
+      .then((): void => {
+        this.msg_handler.once("/notify", (response: Array<TypeValue>): void => {
+          const [ id, total ] = response;
+          debug(`connected as client id ${id.value} from ${total.value} maxLogins`);
+          this._id = id.value;
+          this.emit("ready");
+        });
       });
-    });
   }
 
   private _send(msg: CallAndResponse): Promise < number > {
