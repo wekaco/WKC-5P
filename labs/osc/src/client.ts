@@ -45,15 +45,13 @@ export class Client extends EventEmitter {
   }
 
   private _connect(): Promise<any>  {
-    return this._send(msg.notify(State.ON))
-      .then((): void => {
-        this.msg_handler.once("/notify", (response: Array<TypeValue>): void => {
-          const [ id, total ] = response;
-          debug(`connected as client id ${id.value} from ${total.value} maxLogins`);
-          this._id = id.value;
-          this.emit("ready");
-        });
-      });
+    this.msg_handler.once("/notify", (response: Array<TypeValue>): void => {
+      const [ { value }, total ] = response;
+      debug(`connected as client id ${value} from ${total.value} maxLogins`);
+      this._id = value;
+      this.emit("ready", this._id);
+    });
+    return this._send(msg.notify(State.ON));
   }
 
   private _send(msg: CallAndResponse): Promise < number > {
