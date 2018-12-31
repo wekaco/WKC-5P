@@ -7,7 +7,7 @@ import { EventEmitter } from "events";
 import { MessageHandler  } from "./handlers";
 
 import { State, MessageType, TypeValue } from "./enums";
-import { msg, CallAndResponse } from "supercolliderjs";
+import { msg, Call, CallAndResponse } from "supercolliderjs";
 
 import { toBuffer } from "osc-min";
 
@@ -45,17 +45,26 @@ export class Client extends EventEmitter {
   }
 
   private _connect(): Promise<any>  {
-    this.msg_handler.once("/notify", (response: Array<TypeValue>): void => {
+    return this.callAndResponse(msg.notify(State.ON)).then((response: Array<TypeValue>): void => {
       const [ { value }, total ] = response;
       debug(`connected as client id ${value} from ${total.value} maxLogins`);
       this._id = value;
       this.emit("ready", this._id);
     });
-    return this._send(msg.notify(State.ON));
   }
 
-  private _send(msg: CallAndResponse): Promise < number > {
-    const [ address, ...args ] = msg.call;
+  public callAndResponse(msg: CallAndResponse): Promise <Array<TypeValue>> {
+    const { call, response } = msg;
+    return new Promise<Array<TypeValue>>((resolve, reject) => {
+      const listener = (response: Array<TypeValue>): void => resolve(response);
+      const [ _, eventName ] = response;
+      this.msg_handler.once(eventName, listener);
+      this.call(call).catch((err: Error): void => reject(err));
+    });
+  }
+
+  public call(msg: Call): Promise <number> {
+    const [ address, ...args ] = msg;
     return new Promise<number>((resolve, reject) => {
       this.port.send(
         toBuffer({
